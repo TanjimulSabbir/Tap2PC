@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JoraPC | Remote Control</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/status.css">
+    <link rel="stylesheet" href="/css/feedback.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header / Status Section -->
+        <header class="status-card">
+            <div class="status-info">
+                <h1>JoraPC</h1>
+                <p><span class="dot pulse"></span> Connected: <strong>DESKTOP-MAIN</strong></p>
+            </div>
+            <div class="battery-status">
+                <i class="fas fa-battery-three-quarters"></i> 85%
+            </div>
+        </header>
+
+        <!-- Quick Actions Grid -->
+        <section class="grid-container">
+            <button class="action-card shutdown" data-action="shutdown-not-now">
+                <i class="fas fa-power-off"></i>
+                <span>Shutdown</span>
+            </button>
+            <button class="action-card restart" data-action="restart">
+                <i class="fas fa-sync-alt"></i>
+                <span>Restart</span>
+            </button>
+            <button class="action-card lock" data-action="lock">
+                <i class="fas fa-lock"></i>
+                <span>Lock</span>
+            </button>
+            <button class="action-card status" data-action="status">
+                <i class="fas fa-desktop"></i>
+                <span>Status</span>
+            </button>
+        </section>
+
+        <!-- Full Screen Status Overlay -->
+        <div id="statusPage" class="overlay-page">
+            <div class="overlay-header">
+                <button class="back-btn" onclick="closeStatus()">
+                    <i class="fas fa-chevron-left"></i> Back
+                </button>
+                <h2>System Monitor</h2>
+            </div>
+
+            <div class="status-content">
+                <!-- CPU Usage Card -->
+                <div class="stat-detail-card">
+                    <div class="stat-icon cpu"><i class="fas fa-microchip"></i></div>
+                    <div class="stat-info">
+                        <label>CPU Usage</label>
+                        <div class="stat-row">
+                            <span class="value">42%</span>
+                            <span class="temp">48°C</span>
+                        </div>
+                        <div class="mini-progress">
+                            <div class="bar" style="width: 42%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RAM Usage Card -->
+                <div class="stat-detail-card">
+                    <div class="stat-icon ram"><i class="fas fa-memory"></i></div>
+                    <div class="stat-info">
+                        <label>RAM (Memory)</label>
+                        <div class="stat-row">
+                            <span class="value">8.2 / 16 GB</span>
+                            <span class="percent">51%</span>
+                        </div>
+                        <div class="mini-progress">
+                            <div class="bar" style="width: 51%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GPU Usage Card -->
+                <div class="stat-detail-card">
+                    <div class="stat-icon gpu"><i class="fas fa-vr-cardboard"></i></div>
+                    <div class="stat-info">
+                        <label>GPU (RTX 3060)</label>
+                        <div class="stat-row">
+                            <span class="value">15%</span>
+                            <span class="temp">55°C</span>
+                        </div>
+                        <div class="mini-progress">
+                            <div class="bar" style="width: 15%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Network -->
+                <div class="network-stats">
+                    <div class="net-item">
+                        <i class="fas fa-arrow-down"></i>
+                        <span>1.2 MB/s</span>
+                    </div>
+                    <div class="net-item">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>450 KB/s</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- File Sharing Section -->
+        <section class="file-section">
+            <h3><i class="fas fa-share-nodes"></i> File Management</h3>
+
+            <div class="file-actions">
+                <div class="transfer-card">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <div>
+                        <h4>Send Files</h4>
+                        <p>Transfer to PC</p>
+                    </div>
+                </div>
+                <div class="transfer-card">
+                    <i class="fas fa-cloud-download-alt"></i>
+                    <div>
+                        <h4>Received</h4>
+                        <p>Downloads from PC</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Activity / Stats -->
+        <section class="storage-info">
+            <div class="storage-bar-header">
+                <span>Storage (C:)</span>
+                <span>120GB / 500GB</span>
+            </div>
+            <div class="progress-bg">
+                <div class="progress-fill" style="width: 24%;"></div>
+            </div>
+        </section>
+
+
+        <!-- Feedback Modal System -->
+        <div id="feedbackModal" class="feedback-overlay">
+            <div class="feedback-card">
+                <!-- Icon Container -->
+                <div id="modalIcon" class="status-icon-wrapper">
+                    <i class="fas fa-circle-notch fa-spin"></i>
+                </div>
+
+                <!-- Text Content -->
+                <h3 id="modalTitle">Requesting...</h3>
+                <p id="modalMessage">Connecting to JoraPC server.</p>
+
+                <!-- Action Button (Only shown for errors) -->
+                <button id="modalCloseBtn" class="close-modal-btn" onclick="closeFeedback()">
+                    Dismiss
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="/javascript/app.js"></script>
+</body>
+
+</html>

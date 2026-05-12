@@ -1,0 +1,30 @@
+{
+  "name": "pc-shutdown",
+  "version": "1.0.0",
+  "description": "I'm making a server by using phone i can off and on my pc",
+  "keywords": [
+    "javascript",
+    "nodejs"
+  ],
+  "license": "ISC",
+  "author": "Tanjimul Islam Sabbir",
+  "main": "index.js",
+  "scripts": {
+    "compile": "tsc",
+    "dev": "npx tsx watch backend/src/index.ts",
+    "test": "node dist/index.js"
+  },
+  "type": "module",
+  "devDependencies": {
+    "@types/multer": "^2.1.0",
+    "@types/node": "^25.7.0",
+    "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "@types/express": "^5.0.6",
+    "express": "^5.2.1",
+    "multer": "^2.1.1",
+    "systeminformation": "^5.31.6",
+    "tsx": "^4.21.0"
+  }
+}

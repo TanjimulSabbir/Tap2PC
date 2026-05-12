@@ -1,0 +1,96 @@
+/* Overlay Page Animation */
+.overlay-page {
+    position: fixed;
+    top: 0;
+    left: 100%; /* Hidden to the right */
+    width: 100%;
+    height: 100%;
+    background: var(--bg-color);
+    z-index: 1000;
+    transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.overlay-page.active {
+    left: 0; /* Slide in */
+}
+
+.overlay-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    color: var(--accent-blue);
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+/* Detail Cards */
+.stat-detail-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    border: 1px solid rgba(255,255,255,0.03);
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.cpu { background: rgba(56, 189, 248, 0.1); color: #38bdf8; }
+.ram { background: rgba(168, 85, 247, 0.1); color: #a855f7; }
+.gpu { background: rgba(34, 197, 94, 0.1); color: #22c55e; }
+
+.stat-info { flex: 1; }
+.stat-info label { font-size: 0.8rem; color: var(--text-dim); }
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin: 5px 0;
+}
+
+.stat-row .value { font-size: 1.2rem; font-weight: bold; }
+.stat-row .temp, .stat-row .percent { font-size: 0.85rem; color: var(--text-dim); }
+
+.mini-progress {
+    background: rgba(0,0,0,0.3);
+    height: 6px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.mini-progress .bar {
+    height: 100%;
+    background: var(--accent-blue);
+    border-radius: 10px;
+}
+
+/* Network Footer */
+.network-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+    padding: 20px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 15px;
+}
+
+.net-item { display: flex; align-items: center; gap: 10px; color: var(--text-dim); }
+.net-item i { color: var(--accent-blue); }
