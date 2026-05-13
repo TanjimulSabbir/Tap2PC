@@ -1,6 +1,9 @@
 document.querySelectorAll(".action-card").forEach((btn) => {
     btn.addEventListener("click", () => {
         const action = btn.dataset.action;
+        if (action === "screen-on") {
+            return screenOn();
+        }
         send(action);
     });
 });
@@ -19,14 +22,15 @@ async function send(action) {
     icon.className = 'status-icon-wrapper'; // Reset to blue
     icon.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i>';
     title.innerText = "Processing...";
-    msg.innerText = `JoraPC is executing ${action}. Please wait.`;
+    msg.innerText = `Tap2PC is executing ${action}. Please wait.`;
 
     // Inside your send(action) function, replace the static success message with this:
     const successMessages = {
         shutdown: "Your PC is shutting down now. See you later!",
         sleep: "Putting your PC to sleep. Sweet dreams!",
         lock: "PC secured! Your session is now locked.",
-        restart: "Restarting... Your PC will be back up in a moment."
+        restart: "Restarting... Your PC will be back up in a moment.",
+        "screen-on": "screenOn command sent. Your PC should be waking up now. Please enter your password directly on the PC if required."
     };
 
     try {
@@ -38,7 +42,7 @@ async function send(action) {
             // Close the loader immediately and open the new page
             closeFeedback();
             openStatus();
-            return; // Exit the function here so no success modal shows
+            return;
         }
 
         // 2. SHOW SUCCESS
@@ -57,7 +61,37 @@ async function send(action) {
         icon.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
         title.innerText = "Command Failed";
         msg.innerText = "Could not communicate with your PC. Ensure the server is running.";
-        btn.style.display = 'block'; // Show button so user can manually close
+        btn.style.display = 'block';
+    }
+}
+
+async function screenOn() {
+    try {
+        alert("This Is Screen On Function.");
+        const response = await fetch(`/screen-on`);
+        alert(`Screen On response: ${response.status} ${response.statusText}`);
+        const data = await response.json();
+        alert(`Screen On response: ${response.status} ${response.statusText}, message: ${data.message}`);
+
+        if (data.success) {
+            showModal("PC Awake", data.message);
+
+            setTimeout(() => {
+                closeFeedback();
+            }, 2000);
+
+        } else {
+            showModal(
+                "Failed to Wake PC",
+                data.message || "Could not wake your PC. Please try again."
+            );
+        }
+
+    } catch (error) {
+        showModal(
+            "Error",
+            "Network error. Please check connection."
+        );
     }
 }
 
@@ -85,7 +119,6 @@ function closeStatus() {
 
 // --- Data Simulation Logic ---
 function refreshStats() {
-    // In production, this data comes from your Python/Node server
     const data = {
         cpu: Math.floor(Math.random() * 100),
         ram: 45

@@ -35,10 +35,21 @@
                 <i class="fas fa-sync-alt"></i>
                 <span>Restart</span>
             </button>
+                 <button class="action-card sleep" data-action="sleep">
+                <i class="fas fa-bed"></i>
+                <span>Sleep</span>
+            </button>
             <button class="action-card lock" data-action="lock">
                 <i class="fas fa-lock"></i>
                 <span>Lock</span>
             </button>
+
+            <!-- NEW: Screen On BUTTON -->
+            <button class="action-card success" data-action="screen-on">
+                <i class="fas fa-sun"></i>
+                <span>Screen On</span>
+            </button>
+            
             <button class="action-card status" data-action="status">
                 <i class="fas fa-desktop"></i>
                 <span>Status</span>
@@ -168,6 +179,7 @@
         </div>
     </div>
     <script src="/javascript/app.js"></script>
+    <script src="/javascript/ws-client.js"></script>
 </body>
 
 </html>

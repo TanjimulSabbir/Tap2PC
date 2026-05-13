@@ -1,18 +1,48 @@
-import express from 'express';
+import express, { Router } from 'express';
 import type { Request, Response, NextFunction } from 'express';
 import { exec } from 'child_process';
 import si from 'systeminformation';
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+import { saveDevice } from './services/add.mac.js';
+import { getSavedMac } from './services/get.mac.js';
+import wol from 'wake_on_lan';
+import cors from "cors";
+
+import { WebSocketServer } from "ws";
+
+
 
 const app = express();
 const PORT: number = 3000;
 const SECRET_KEY: string = 'mysecret123';
 const root = process.cwd();
 
+app.use(cors());
 app.use(express.json());
 const upload = multer({ dest: "uploads/" });
+// WAKE PC (LAN)
+const router = Router();
+app.use(router);
+
+const macAddress = path.join(process.cwd(), "backend/data/device.json");
+
+// 🌐 Create WebSocket server
+const wss = new WebSocketServer({ port: 8080 });
+
+let pcSocket: any = null;
+
+wss.on("connection", (ws) => {
+  console.log("✅ PC connected via WebSocket");
+
+  pcSocket = ws;
+
+  ws.on("close", () => {
+    console.log("❌ PC disconnected");
+    pcSocket = null;
+  });
+});
 
 // 🔐 Middleware for auth
 const checkKey = (req: Request, res: Response, next: NextFunction): void => {
@@ -25,7 +55,6 @@ const checkKey = (req: Request, res: Response, next: NextFunction): void => {
 
   next();
 };
-
 // 🖥️ Helper function
 const runCommand = (command: string, res: Response): void => {
   exec(command, (error) => {
@@ -41,11 +70,31 @@ app.use(express.static(path.join(process.cwd(), "front-end")));
 
 // 🌐 UI Route
 app.get('/', (_req: Request, res: Response) => {
+  if (!fs.existsSync(macAddress)) {
+    saveDevice();
+  }
   res.sendFile(path.join(root, "front-end/pages/index.html"));
 });
 
 app.get('/shutdown', checkKey, (_req, res) => {
   runCommand('shutdown now', res);
+});
+
+
+app.get("/sleep", (req, res) => {
+  exec("systemctl suspend", (err) => {
+    if (err) {
+      return res.status(500).json({
+        success: false,
+        message: "Failed to sleep PC"
+      });
+    }
+
+    return res.json({
+      success: true,
+      message: "PC is going to sleep"
+    });
+  });
 });
 
 app.get('/restart', checkKey, (_req, res) => {
@@ -55,6 +104,27 @@ app.get('/restart', checkKey, (_req, res) => {
 app.get('/lock', checkKey, (_req, res) => {
   console.log('Locking session...');
   runCommand('loginctl lock-session', res);
+});
+
+app.get("/screen-on", (req, res) => {
+  try {
+
+    sendToPC("screen-on");
+    const mac = getSavedMac();
+    console.log(mac, "mac address");
+
+    wol.wake(mac);
+
+    return res.json({
+      success: true,
+      message: "Wake signal sent"
+    });
+  } catch {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to wake device"
+    });
+  }
 });
 // 📁 Upload file from phone
 app.post("/upload", upload.single("file"), (req, res) => {
