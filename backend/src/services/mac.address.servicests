@@ -10,7 +10,7 @@ if (!fs.existsSync(dir)) {
 
 const FILE_PATH = path.join(dir, "device.json");
 
-function getMac() {
+function getMacAddressFromDevice() {
     const interfaces = os.networkInterfaces();
 
     for (const name of Object.keys(interfaces)) {
@@ -28,8 +28,8 @@ function getMac() {
     return null;
 }
 
-export function saveDevice() {
-    const mac = getMac();
+export function saveMacAddressOnFile() {
+    const mac = getMacAddressFromDevice();
 
     if (!mac) {
         console.error("No MAC found");
@@ -46,3 +46,16 @@ export function saveDevice() {
 
     console.log("📦 Device saved at:", FILE_PATH);
 }
+
+function getSavedMacAddressFromFileSync() {
+    try {
+        const filePath = path.join(process.cwd(), "backend/data/device.json");
+        const data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+        return data.mac;
+    } catch (err) {
+        console.error("Error reading device.json:", err);
+        throw err;
+    }
+}
+
+export { getSavedMacAddressFromFileSync };

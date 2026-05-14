@@ -1,21 +1,17 @@
-import WebSocket from "ws";
-import { exec } from "child_process";
+const ws = new WebSocket(`ws://${location.host}`);
 
-const ws = new WebSocket("ws://localhost:8080");
+ws.onopen = () => {
+    console.log("✅ Connected to WebSocket");
+};
 
-ws.on("open", () => {
-    console.log("Connected to server");
-});
+ws.onmessage = (event) => {
+    console.log("📩 Message:", event.data);
+};
 
-ws.on("message", (msg) => {
-    const command = msg.toString();
-    console.log("Command:", command);
+ws.onclose = () => {
+    console.log("❌ Disconnected");
+};
 
-    if (command === "sleep") {
-        exec("systemctl suspend");
-    }
-
-    if (command === "screen-on") {
-        exec("DISPLAY=:0 xset dpms force on");
-    }
-});
+ws.onerror = (err) => {
+    console.log("❌ WS Error:", err);
+};
