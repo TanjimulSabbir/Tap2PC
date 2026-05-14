@@ -1,7 +1,8 @@
 import wol from "wake_on_lan";
-import { getSavedMac } from "./mac.services.js";
+import { getSavedMacAddressFromFileSync } from "./mac.address.services";
+
 
 export const wakePC = () => {
-    const mac = getSavedMac();
+    const mac = getSavedMacAddressFromFileSync();
     wol.wake(mac);
 };

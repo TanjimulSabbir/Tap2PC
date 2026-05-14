@@ -14,8 +14,19 @@ export const initWebSocket = (server: any) => {
       pcSocket = null;
     });
 
-    ws.on("message", (msg) => {
-      console.log("📩 From client:", msg.toString());
+    ws.on('message', async (data) => {
+      const message = JSON.parse(data.toString());
+
+      if (message.type === 'SYSTEM_COMMAND') {
+        // Logic to map the command string to your controller
+        if (message.command.includes('screen-on')) {
+          // Since controllers usually expect (req, res), 
+          // you might need to extract the logic into a service 
+          // or call a helper function here.
+          console.log("Executing Screen On via WS");
+          // Example: await systemController.screenOn(null, null); 
+        }
+      }
     });
   });
 };

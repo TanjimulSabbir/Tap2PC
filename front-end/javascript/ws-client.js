@@ -15,3 +15,5 @@ ws.onclose = () => {
 ws.onerror = (err) => {
     console.log("❌ WS Error:", err);
 };
+
+window.ws = ws; // Expose for app.js to use

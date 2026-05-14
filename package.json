@@ -8,12 +8,11 @@
   ],
   "license": "ISC",
   "author": "Tanjimul Islam Sabbir",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "compile": "tsc",
-    "dev": "npx tsx watch backend/src/index.ts",
-    "ws-dev": "node backend/src/ws/ws.js",
-    "test": "node dist/index.js"
+    "dev": "npx tsx watch backend/src/server.ts",
+    "test": "node dist/server.js"
   },
   "type": "module",
   "devDependencies": {

@@ -57,7 +57,7 @@ Tap2PC/
 │
 ├── backend/
 │ ├── src/
-│ │ ├── index.ts
+│ │ ├── server.ts
 │ │ ├── routes/
 │ │ ├── services/
 │ │ ├── utils/

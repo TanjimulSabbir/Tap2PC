@@ -28,6 +28,7 @@ function getMacAddressFromDevice() {
     return null;
 }
 
+// this will be saved once when the server starts, and will be used to wake the PC from the phone
 export function saveMacAddressOnFile() {
     const mac = getMacAddressFromDevice();
 

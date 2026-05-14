@@ -1,8 +1,10 @@
+const { socketSendRequestPayLoadTypes } = require("./constant/socket.connection.type");
+
 document.querySelectorAll(".action-card").forEach((btn) => {
     btn.addEventListener("click", () => {
         const action = btn.dataset.action;
-        if (action === "screen-on") {
-            return screenOn();
+        if (socketSendRequestPayLoadTypes[action]) {
+            return SendRequestToWebSocketConnection(action);
         }
         send(action);
     });
@@ -35,6 +37,7 @@ async function send(action) {
 
     try {
         const response = await fetch(`/${action}`);
+        alert(`Response for ${action}: ${response.status} ${response.statusText}`);
         if (!response.ok) throw new Error("PC Unreachable");
 
         // 1. SPECIAL HANDLING FOR STATUS
@@ -65,7 +68,7 @@ async function send(action) {
     }
 }
 
-async function screenOn() {
+export async function screenOn() {
     try {
         alert("This Is Screen On Function.");
         const response = await fetch(`/screen-on`);
@@ -126,6 +129,17 @@ function refreshStats() {
 
     document.getElementById('cpu-val').innerText = data.cpu + "%";
     document.getElementById('cpu-bar').style.width = data.cpu + "%";
+}
+
+
+
+function SendRequestToWebSocketConnection(socketRequestType) {
+    if (window.ws && window.ws.readyState === WebSocket.OPEN) {
+        const message = JSON.stringify(socketSendRequestPayLoadTypes[socketRequestType] || { type: "get-stats" });
+        window.ws.send(message);
+    } else {
+        console.log("WebSocket not connected");
+    }
 }
 
 // Update stats every 2 seconds if the page is open
