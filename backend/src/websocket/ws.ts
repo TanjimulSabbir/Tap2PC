@@ -1,32 +1,54 @@
 import { WebSocketServer } from "ws";
+import { getSystemInfo } from "../services/system.info.services";
 
 let pcSocket: any = null;
 
+// backend/src/websocket/ws.ts
 export const initWebSocket = (server: any) => {
   const wss = new WebSocketServer({ server });
 
-  wss.on("connection", (ws) => {
-    console.log("✅ PC connected via WebSocket");
+  wss.on("connection", async (ws) => {
+    console.log("✅ Client connected via WebSocket");
     pcSocket = ws;
+    const systemInfo = await getSystemInfo();
+
+    console.log("📦 Sending welcome message with system info...", systemInfo);
+    ws.send(JSON.stringify({
+      type: "SYSTEM_INFO",
+      message: "Welcome to Jago PC WebSocket!",
+      data: systemInfo
+    }));
+
+    // --- THIS IS THE MISSING PART ---
+    ws.on("message", async (data) => {
+      try {
+        // Parse the incoming data buffer
+        const payload = JSON.parse(data.toString());
+        console.log('📩 Received:', payload);
+
+        switch (payload.type) {
+          case 'screen-on':
+            console.log('🚀 Executing Screen On command...');
+            ws.send(JSON.stringify({
+              type: "COMMAND_RESULT",
+              action: "screen-on",
+              success: true,
+              message: "PC is waking up!"
+            }));
+            break;
+
+          default:
+            console.warn('❓ Unknown command type:', payload.type);
+        }
+      } catch (error) {
+        console.error('❌ Error processing WS message:', error);
+      }
+    });
+    // --------------------------------
 
     ws.on("close", () => {
       console.log("❌ PC disconnected");
       pcSocket = null;
-    });
-
-    ws.on('message', async (data) => {
-      const message = JSON.parse(data.toString());
-
-      if (message.type === 'SYSTEM_COMMAND') {
-        // Logic to map the command string to your controller
-        if (message.command.includes('screen-on')) {
-          // Since controllers usually expect (req, res), 
-          // you might need to extract the logic into a service 
-          // or call a helper function here.
-          console.log("Executing Screen On via WS");
-          // Example: await systemController.screenOn(null, null); 
-        }
-      }
     });
   });
 };

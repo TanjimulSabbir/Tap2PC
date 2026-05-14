@@ -1,11 +1,11 @@
-const { socketSendRequestPayLoadTypes } = require("./constant/socket.connection.type");
+// const { socketSendRequestPayLoadTypes } = require("./constant/socket.connection.type");
 
 document.querySelectorAll(".action-card").forEach((btn) => {
     btn.addEventListener("click", () => {
         const action = btn.dataset.action;
-        if (socketSendRequestPayLoadTypes[action]) {
-            return SendRequestToWebSocketConnection(action);
-        }
+        // if (socketSendRequestPayLoadTypes[action]) {
+        //     return SendRequestToWebSocketConnection(action);
+        // }
         send(action);
     });
 });
@@ -24,7 +24,7 @@ async function send(action) {
     icon.className = 'status-icon-wrapper'; // Reset to blue
     icon.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i>';
     title.innerText = "Processing...";
-    msg.innerText = `Tap2PC is executing ${action}. Please wait.`;
+    msg.innerText = `Jago PC is executing ${action}. Please wait.`;
 
     // Inside your send(action) function, replace the static success message with this:
     const successMessages = {
@@ -65,36 +65,6 @@ async function send(action) {
         title.innerText = "Command Failed";
         msg.innerText = "Could not communicate with your PC. Ensure the server is running.";
         btn.style.display = 'block';
-    }
-}
-
-export async function screenOn() {
-    try {
-        alert("This Is Screen On Function.");
-        const response = await fetch(`/screen-on`);
-        alert(`Screen On response: ${response.status} ${response.statusText}`);
-        const data = await response.json();
-        alert(`Screen On response: ${response.status} ${response.statusText}, message: ${data.message}`);
-
-        if (data.success) {
-            showModal("PC Awake", data.message);
-
-            setTimeout(() => {
-                closeFeedback();
-            }, 2000);
-
-        } else {
-            showModal(
-                "Failed to Wake PC",
-                data.message || "Could not wake your PC. Please try again."
-            );
-        }
-
-    } catch (error) {
-        showModal(
-            "Error",
-            "Network error. Please check connection."
-        );
     }
 }
 
