@@ -1,10 +1,18 @@
 import { WebSocketServer } from "ws";
 import { getSystemInfo } from "../services/system.info.services";
+import { exec } from "child_process";
+import os from "os";
+import { linuxAdapter } from "../services/screen.wake.up.services";
+import { handleCommand } from "./ws.services/on.message.read";
 
 let pcSocket: any = null;
+export const socketSendRequestPayLoadTypes = {
+  "api/system/screen-on": { type: "screen-on", },
+};
 
 // backend/src/websocket/ws.ts
 export const initWebSocket = (server: any) => {
+
   const wss = new WebSocketServer({ server });
 
   wss.on("connection", async (ws) => {
@@ -12,37 +20,16 @@ export const initWebSocket = (server: any) => {
     pcSocket = ws;
     const systemInfo = await getSystemInfo();
 
-    console.log("📦 Sending welcome message with system info...", systemInfo);
+    console.log("📦 Sending welcome message with system info...");
     ws.send(JSON.stringify({
       type: "SYSTEM_INFO",
-      message: "Welcome to Jago PC WebSocket!",
+      message: "Welcome to Tap2PC WebSocket!",
       data: systemInfo
     }));
 
     // --- THIS IS THE MISSING PART ---
     ws.on("message", async (data) => {
-      try {
-        // Parse the incoming data buffer
-        const payload = JSON.parse(data.toString());
-        console.log('📩 Received:', payload);
-
-        switch (payload.type) {
-          case 'screen-on':
-            console.log('🚀 Executing Screen On command...');
-            ws.send(JSON.stringify({
-              type: "COMMAND_RESULT",
-              action: "screen-on",
-              success: true,
-              message: "PC is waking up!"
-            }));
-            break;
-
-          default:
-            console.warn('❓ Unknown command type:', payload.type);
-        }
-      } catch (error) {
-        console.error('❌ Error processing WS message:', error);
-      }
+      handleCommand(ws, JSON.parse(data.toString()));
     });
     // --------------------------------
 

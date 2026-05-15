@@ -1,7 +1,7 @@
-# <div align="center">🚀 Jago PC</div>
+# <div align="center">🚀 Tap2PC</div>
 
 <div align="center">
-  <img src="https://img.shields.io/badge/Jago PC-Remote_Control-blue?style=for-the-badge&logo=node.js" alt="Banner" />
+  <img src="https://img.shields.io/badge/Tap2PC-Remote_Control-blue?style=for-the-badge&logo=node.js" alt="Banner" />
   <br />
   <p><strong>Control your PC from your phone — No cloud, no lag, just a simple tap.</strong></p>
   
@@ -16,7 +16,7 @@
 ---
 
 ## 📖 Overview
-**Jago PC** is a production-grade, **local-first remote control system** that bridges the gap between your phone and your computer. It turns your smartphone into a powerful dashboard to manage your system's power, hardware performance, and files—all over your local network (LAN). No cloud, no logins, and zero external dependencies.
+**Tap2PC** is a production-grade, **local-first remote control system** that bridges the gap between your phone and your computer. It turns your smartphone into a powerful dashboard to manage your system's power, hardware performance, and files—all over your local network (LAN). No cloud, no logins, and zero external dependencies.
 
 ---
 
@@ -42,7 +42,7 @@
 ---
 
 ## 🛠️ Tech Stack
-Jago PC is built with modern, high-performance tools:
+Tap2PC is built with modern, high-performance tools:
 *   **Runtime/Backend:** Node.js & Express.js
 *   **Language:** TypeScript for type-safe execution.
 *   **Hardware API:** Systeminformation for hardware hooks.
@@ -53,7 +53,7 @@ Jago PC is built with modern, high-performance tools:
 
 ## 🏗️ Project Architecture
 ```text
-Jago PC/
+Tap2PC/
 │
 ├── backend/
 │ ├── src/
@@ -91,8 +91,8 @@ Jago PC/
 ## 1. Clone the repository
 
 ```bash
-git clone https://github.com/tanjimulsabbir/Jago PC.git
-cd Jago PC
+git clone https://github.com/tanjimulsabbir/Tap2PC.git
+cd Tap2PC
 ```
 
 ## 2. Install dependencies
@@ -113,4 +113,4 @@ To connect your mobile device, you first need to identify your computer's local 
 ip a
 ```
 WindowsBashipconfig
-Example output: http://192.168.68.107:30005. Open on MobileWiFi Sync: Connect your phone & PC to the same WiFi network.Browser: Open any web browser on your phone.Connect: Enter the URL shown in your terminal.📡 API Endpoints🖥️ System ControlActionMethodEndpointDescriptionShutdownGET/shutdownPower off the PC immediatelyRestartGET/restartReboot the systemLockGET/lockLock the user session📊 System InformationActionMethodEndpointReturnsSystem StatusGET/statusCPU, RAM, Network, Uptime, & OS info📁 File SystemActionMethodEndpointUploadPOST/uploadList FilesGET/filesDownloadGET/download/:filename🖥️ UI Features🏠 Dashboard Home Page: Clean and intuitive interface.🔳 Action Buttons Grid: Quick-tap controls for system actions.📈 System Monitoring Overlay: Real-time data visualization.📂 File Transfer Section: Easy upload/download management.💾 Storage Usage Bar: Visual indicator of disk space.🔔 Feedback Modals: Instant status updates after every action.🔐 Security Notice[!CAUTION]IMPORTANT: Jago PC executes system-level commands directly on your machine.Recommended usage:✅ Only use on trusted devices.✅ Only use on your Local Area Network (LAN).❌ Do NOT expose to the public internet without authentication.🎯 Use Cases🏠 Personal PC Remote: Control your media PC from the couch.💼 Workstation Management: Manage office PCs remotely.📶 Wireless File Transfer: Move files without cables.📊 Monitoring: Keep an eye on system resources.⚡ Quick Actions: Shutdown or restart without touching the hardware.💻 Developer Productivity: A tool for enhancing dev workflows.🧭 Future Improvements[ ] 🔐 Authentication System: Token-based or login security.[ ] 📡 WebSockets: Real-time bi-directional updates.[ ] 📱 Mobile Apps: Native versions for React Native / Flutter.[ ] 🖥 Desktop App: Electron-based installer for easy setup.[ ] 🤳 QR Connection: Scan a code to connect instantly.[ ] ☁️ Cloud Relay: Optional mode for remote access outside LAN.[ ] 📊 Live Graphs: Real-time monitoring for system stats.👨‍💻 AuthorBuilt with ❤️ by Tanjimul Islam Sabbir📜 LicenseISC License — Free for personal and educational use.🚀 Final NoteJago PC is designed to feel like a real SaaS product while running completely locally. It gives you instant control of your computer from your phone — fast, simple, and powerful.
+Example output: http://192.168.68.107:30005. Open on MobileWiFi Sync: Connect your phone & PC to the same WiFi network.Browser: Open any web browser on your phone.Connect: Enter the URL shown in your terminal.📡 API Endpoints🖥️ System ControlActionMethodEndpointDescriptionShutdownGET/shutdownPower off the PC immediatelyRestartGET/restartReboot the systemLockGET/lockLock the user session📊 System InformationActionMethodEndpointReturnsSystem StatusGET/statusCPU, RAM, Network, Uptime, & OS info📁 File SystemActionMethodEndpointUploadPOST/uploadList FilesGET/filesDownloadGET/download/:filename🖥️ UI Features🏠 Dashboard Home Page: Clean and intuitive interface.🔳 Action Buttons Grid: Quick-tap controls for system actions.📈 System Monitoring Overlay: Real-time data visualization.📂 File Transfer Section: Easy upload/download management.💾 Storage Usage Bar: Visual indicator of disk space.🔔 Feedback Modals: Instant status updates after every action.🔐 Security Notice[!CAUTION]IMPORTANT: Tap2PC executes system-level commands directly on your machine.Recommended usage:✅ Only use on trusted devices.✅ Only use on your Local Area Network (LAN).❌ Do NOT expose to the public internet without authentication.🎯 Use Cases🏠 Personal PC Remote: Control your media PC from the couch.💼 Workstation Management: Manage office PCs remotely.📶 Wireless File Transfer: Move files without cables.📊 Monitoring: Keep an eye on system resources.⚡ Quick Actions: Shutdown or restart without touching the hardware.💻 Developer Productivity: A tool for enhancing dev workflows.🧭 Future Improvements[ ] 🔐 Authentication System: Token-based or login security.[ ] 📡 WebSockets: Real-time bi-directional updates.[ ] 📱 Mobile Apps: Native versions for React Native / Flutter.[ ] 🖥 Desktop App: Electron-based installer for easy setup.[ ] 🤳 QR Connection: Scan a code to connect instantly.[ ] ☁️ Cloud Relay: Optional mode for remote access outside LAN.[ ] 📊 Live Graphs: Real-time monitoring for system stats.👨‍💻 AuthorBuilt with ❤️ by Tanjimul Islam Sabbir📜 LicenseISC License — Free for personal and educational use.🚀 Final NoteTap2PC is designed to feel like a real SaaS product while running completely locally. It gives you instant control of your computer from your phone — fast, simple, and powerful.

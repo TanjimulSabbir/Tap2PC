@@ -1,19 +1,28 @@
+/* ============================================================
+   1. VARIABLES & ROOT
+   ============================================================ */
 :root {
-    --bg-color: #0f172a;
-    --card-bg: #1e293b;
+    --bg-color: #030e2c;
+    --card-bg: #042050;
     --accent-blue: #38bdf8;
-    --danger: #ef4444;
+    --danger: #f87171;
     --warning: #fbbf24;
+    --success: #4ade80;
     --text-main: #f8fafc;
     --text-dim: #94a3b8;
-    --grad: linear-gradient(135deg, #38bdf8 0%, #2563eb 100%);
+    --grad: linear-gradient(135deg, #02b0fb 0%, #0651f4 100%);
+    --glass: rgba(255, 255, 255, 0.03);
 }
 
+/* ============================================================
+   2. GLOBAL RESET
+   ============================================================ */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Roboto, sans-serif;
+    /* Outfit is the best for UI readability */
+    font-family: 'Outfit', sans-serif;
 }
 
 body {
@@ -21,116 +30,203 @@ body {
     color: var(--text-main);
     display: flex;
     justify-content: center;
-    padding: 20px;
+    padding: 15px;
 }
 
 .app-container {
     width: 100%;
-    max-width: 450px; /* Mobile first feel */
+    max-width: 420px;
 }
 
-/* Status Card */
+/* ============================================================
+   HIGH-END HEADER
+   ============================================================ */
 .status-card {
-    background: var(--grad);
-    padding: 25px;
-    border-radius: 24px;
+    background: linear-gradient(135deg, #182c5c 0%, #041669 100%);
+    padding: 24px;
+    border-radius: 28px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px;
-    box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);
+    margin-bottom: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
 }
 
-.status-info h1 { font-size: 1.5rem; letter-spacing: 1px; }
-.status-info p { font-size: 0.85rem; opacity: 0.9; margin-top: 5px; }
-
-.dot {
-    height: 8px;
-    width: 8px;
-    background-color: #4ade80;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 5px;
+/* Subtle tech-grid pattern */
+.status-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(5, 164, 232, 0.1) 1px, transparent 1px);
+    background-size: 12px 12px;
+    mask-image: linear-gradient(to bottom, rgb(2, 65, 154), transparent);
 }
 
-/* Quick Actions */
+.brand-logo {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 900;
+    letter-spacing: -1px;
+}
+
+.brand-logo span {
+    color: var(--success);
+    text-shadow: 0 0 15px var(--accent-glow);
+}
+
+.device-tag {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+}
+
+.header-meta {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    padding: 12px 16px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: right;
+}
+
+#currentTime {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+/* ============================================================
+   4. QUICK ACTIONS GRID
+   ============================================================ */
 .grid-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    margin-bottom: 30px;
+    gap: 12px;
+    margin-bottom: 25px;
 }
 
 .action-card {
     background: var(--card-bg);
-    border: 1px solid rgba(255,255,255,0.05);
-    padding: 20px;
-    border-radius: 20px;
+    border: 1px solid rgba(31, 30, 30, 0.04);
+    padding: 18px;
+    border-radius: 22px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     color: var(--text-main);
-    cursor: pointer;
-    transition: transform 0.2s, background 0.2s;
+    text-decoration: none;
+    transition: all 0.2s ease;
 }
 
-.action-card i { font-size: 1.5rem; }
-.action-card:active { transform: scale(0.95); }
+.action-card i {
+    font-size: 1.4rem;
+}
 
-.shutdown i { color: var(--danger); }
-.restart i { color: var(--warning); }
-.lock i { color: var(--accent-blue); }
+.action-card span {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
 
-/* File Section */
+.action-card:active {
+    transform: scale(0.96);
+    background: #1e293b;
+}
+
+/* Action Icon Colors */
+.shutdown i {
+    color: var(--danger);
+}
+
+.restart i {
+    color: var(--warning);
+}
+
+.lock i {
+    color: var(--accent-blue);
+}
+
+.success i {
+    color: var(--success);
+}
+
+.status i {
+    color: var(--text-main);
+}
+.battery-mini i {
+    color: var(--warning);
+}
+
+/* ============================================================
+   5. FILE & STORAGE SECTION
+   ============================================================ */
 .file-section h3 {
-    margin-bottom: 15px;
-    font-size: 1.1rem;
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
     color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .transfer-card {
     background: var(--card-bg);
-    padding: 15px;
-    border-radius: 15px;
+    padding: 14px;
+    border-radius: 18px;
     display: flex;
     align-items: center;
-    gap: 15px;
-    margin-bottom: 12px;
+    gap: 12px;
+    margin-bottom: 10px;
     border: 1px solid transparent;
 }
 
-.transfer-card:hover { border-color: var(--accent-blue); }
 .transfer-card i {
-    font-size: 1.2rem;
-    background: rgba(56, 189, 248, 0.1);
-    padding: 12px;
+    font-size: 1.1rem;
+    background: var(--glass);
+    padding: 10px;
     border-radius: 12px;
     color: var(--accent-blue);
 }
 
-.transfer-card h4 { font-size: 1rem; }
-.transfer-card p { font-size: 0.8rem; color: var(--text-dim); }
+.transfer-card h4 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+}
 
-/* Progress Bar */
+.transfer-card p {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+}
+
+/* Progress / Storage */
 .storage-info {
-    margin-top: 20px;
+    margin-top: 15px;
     background: var(--card-bg);
-    padding: 20px;
-    border-radius: 20px;
+    padding: 18px;
+    border-radius: 22px;
 }
 
 .storage-bar-header {
     display: flex;
     justify-content: space-between;
-    font-size: 0.8rem;
-    margin-bottom: 10px;
+    font-size: 0.75rem;
+    margin-bottom: 8px;
     color: var(--text-dim);
+    font-weight: 500;
 }
 
 .progress-bg {
-    background: #0f172a;
-    height: 8px;
+    background: #0b0f1a;
+    height: 6px;
     border-radius: 10px;
     overflow: hidden;
 }
@@ -139,12 +235,29 @@ body {
     height: 100%;
     background: var(--grad);
     border-radius: 10px;
+    transition: width 0.8s ease;
 }
 
-/* Animations */
+/* ============================================================
+   6. ANIMATIONS
+   ============================================================ */
 @keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.3; }
-    100% { opacity: 1; }
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.4;
+        transform: scale(1.2);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
-.pulse { animation: pulse 2s infinite; }
+
+.pulse {
+    animation: pulse 2s infinite ease-in-out;
+}

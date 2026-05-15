@@ -1,22 +1,51 @@
 // Function to update your UI based on WS response
 export function handleServerFeedback(res) {
-    const icon = document.getElementById('modalIcon');
+
+    const modal = document.getElementById('feedbackModal');
+
+    const iconWrapper = document.getElementById('modalIcon');
+    const icon = iconWrapper.querySelector('i');
+
     const title = document.getElementById('modalTitle');
     const msg = document.getElementById('modalMessage');
+    const btn = document.getElementById('modalCloseBtn');
 
-    if (res.success) {
-        icon.className = 'status-icon-wrapper success';
-        icon.innerHTML = '<i class="fas fa-check-circle"></i>';
-        title.innerText = "Success!";
-    } else {
-        icon.className = 'status-icon-wrapper error';
-        icon.innerHTML = '<i class="fas fa-times-circle"></i>';
-        title.innerText = "Error";
+    if (!modal || !iconWrapper || !icon || !title || !msg || !btn) {
+        console.error("Feedback modal elements missing");
+        return;
     }
-    msg.innerText = res.message;
 
-    // Close modal after 2 seconds
-    setTimeout(() => {
-        document.getElementById('feedbackModal').style.display = 'none';
-    }, 2000);
+    // ======================
+    // SUCCESS STATE
+    // ======================
+    if (res.success) {
+
+        iconWrapper.className = 'status-icon-wrapper success';
+        icon.className = 'fas fa-check-circle';
+
+        title.innerText = "Success!";
+        msg.innerText = res.message || "Action completed successfully.";
+
+        btn.style.display = 'none';
+
+        // auto close
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 2000);
+
+    } else {
+
+        // ======================
+        // ERROR STATE
+        // ======================
+        iconWrapper.className = 'status-icon-wrapper error';
+        icon.className = 'fas fa-times-circle';
+
+        title.innerText = "Error";
+        msg.innerText =
+            res.message ||
+            "Something went wrong while processing the request.";
+
+        btn.style.display = 'block';
+    }
 }
