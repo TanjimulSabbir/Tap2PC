@@ -4,24 +4,43 @@ import si from "systeminformation";
 const router = Router();
 
 router.get("/info", async (_req, res) => {
-    const ram = si.battery();
-    const cpu = si.cpu();
-    const os = si.osInfo();
-    const network = si.networkInterfaces();
-    const time = si.time();
-    const disk = si.diskLayout();
-    const mem = si.mem();
+    try {
 
-    res.json({
-        ram,
-        cpu,
-        os,
-        network,
-        time,
-        disk,
-        mem
-    });
+        const [
+            battery,
+            cpu,
+            os,
+            network,
+            time,
+            disk,
+            mem
+        ] = await Promise.all([
+            si.battery(),
+            si.cpu(),
+            si.osInfo(),
+            si.networkInterfaces(),
+            si.time(),
+            si.diskLayout(),
+            si.mem()
+        ]);
 
+        res.json({
+            battery,
+            cpu,
+            os,
+            network,
+            time,
+            disk,
+            mem
+        });
+
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            message: "Failed to fetch system info",
+            error: "error details hidden for security"
+        });
+    }
 });
 
 export default router;

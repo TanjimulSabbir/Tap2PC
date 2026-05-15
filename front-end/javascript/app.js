@@ -1,11 +1,11 @@
 import "/javascript/ws-client.js";
 import "/javascript/components/screen-on-server-success-ui.js";
 import "/javascript/constant/button.actions.js";
+import "/javascript/services/send.action.request.js";
 
 import paths from "./constant/button.actions.js";
 import { SendActionRequest } from "./services/send.action.request.js";
 import { OpenConfirmationModal } from "./components/confirmation.modal.js";
-
 
 
 document.querySelectorAll(".action-card").forEach((btn) => {
@@ -21,7 +21,7 @@ document.querySelectorAll(".action-card").forEach((btn) => {
         if (pathConfig.confirmationMessage !== null) {
             OpenConfirmationModal(pathConfig);
         } else {
-            SendActionRequest(pathConfig.action);
+            SendActionRequest(pathConfig);
         }
     });
 });

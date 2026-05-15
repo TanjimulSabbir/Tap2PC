@@ -1,6 +1,10 @@
+import { ShowSystemInfo } from "../components/system.info.js";
 import { SendRequestToWebSocketConnection } from "./send.request.websocket.js";
 
 export async function SendActionRequest(config) {
+    if (config.type === "system-info") {
+        return ShowSystemInfo(config);
+    }
     const modal = document.getElementById('feedbackModal');
     const iconWrapper = document.getElementById('feedbackModalIcon');
     const icon = document.querySelector('#feedbackModalIcon i');
@@ -14,6 +18,7 @@ export async function SendActionRequest(config) {
         console.error("Feedback modal elements missing");
         return;
     }
+    
     // ======================
     // LOADING STATE
     // ======================
@@ -31,7 +36,7 @@ export async function SendActionRequest(config) {
         const response =
             config.requestType === "websocket"
                 ? await SendRequestToWebSocketConnection(config)
-                : await fetch(`${config.action}`);
+                : await fetch(`/${config.action}`);
 
         if (!response || !response.ok) {
             throw new Error("Request Failed");

@@ -8,6 +8,8 @@
 
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/status.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/system.info.css">
     <link rel="stylesheet" href="/css/feedback.css">
     <link rel="stylesheet" href="/css/confirmation.modal.css">
 
@@ -21,29 +23,31 @@
 
     <div class="app-container">
 
-        <!-- HEADER -->
-        <header class="status-card">
-            <div class="status-info">
-                <h1 class="brand-logo">Tap2<span>PC</span></h1>
-                <p class="device-tag">
-                    <span class="dot pulse"></span>
-                    <span id="pcName">DESKTOP-MAIN</span>
-                </p>
+       <header class="status-container">
+    <div class="status-card">
+        <div class="brand-group">
+            <h1 class="logo">Tap2<span>PC</span></h1>
+            <p id="pcName" class="device-id">HP-ELITEBOOK-840-G3</p>
+            <div class="badge-wrapper">
+                <span class="neon-pill">
+                    <span class="pulse-dot"></span> Online
+                </span>
             </div>
+        </div>
 
-            <div class="header-meta">
-                <div id="currentTime">00:00</div>
-                <div class="battery-mini">
-                    <i class="fas fa-bolt"></i>
-                    <span id="battery">--%</span>
-                </div>
+        <div class="glass-panel">
+            <div id="currentTime" class="clock">09:24 PM</div>
+            <div class="battery-info">
+                <i class="fas fa-bolt"></i>
+                <span id="battery">84% Charging</span>
             </div>
-        </header>
-
+        </div>
+    </div>
+</header>
         <!-- ACTION GRID -->
         <section class="grid-container">
 
-            <button class="action-card shutdown" data-action="api/system/shutdown">
+            <button class="action-card shutdown" data-action="shutdown">
                 <i class="fas fa-power-off"></i>
                 <span>Shutdown</span>
             </button>
@@ -75,64 +79,67 @@
 
         </section>
 
-        <!-- SYSTEM OVERLAY -->
-        <div id="statusPage" class="overlay-page">
-            <div class="overlay-header">
-                <button class="back-btn" onclick="closeStatus()">
-                    <i class="fas fa-chevron-left"></i> Back
-                </button>
-                <h2>System Monitor</h2>
-            </div>
+        <!-- SYSTEM Information -->
+        <section>
+            <!-- SYSTEM OVERLAY -->
+            <div id="statusPage" class="overlay-page">
+                <div class="overlay-header">
+                    <button class="back-btn" onclick="closeStatus()">
+                        <i class="fas fa-chevron-left"></i> Back
+                    </button>
+                    <h2>System Monitor</h2>
+                </div>
 
-            <div class="status-content">
-                <div class="stat-detail-card">
-                    <div class="stat-icon cpu"><i class="fas fa-microchip"></i></div>
-                    <div class="stat-info">
-                        <label>CPU Usage</label>
-                        <div class="stat-row">
-                            <span class="value">42%</span>
-                            <span class="temp">48°C</span>
+                <div class="status-content">
+                    <div class="stat-detail-card">
+                        <div class="stat-icon cpu"><i class="fas fa-microchip"></i></div>
+                        <div class="stat-info">
+                            <label>CPU Usage</label>
+                            <div class="stat-row">
+                                <span class="value">42%</span>
+                                <span class="temp">48°C</span>
+                            </div>
+                            <div class="mini-progress">
+                                <div class="bar" style="width: 42%"></div>
+                            </div>
                         </div>
-                        <div class="mini-progress">
-                            <div class="bar" style="width: 42%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FILE SECTION -->
+            <section class="file-section">
+                <h3><i class="fas fa-share-nodes"></i> File Management</h3>
+
+                <div class="file-actions">
+                    <div class="transfer-card">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <div>
+                            <h4>Send Files</h4>
+                            <p>Transfer to PC</p>
+                        </div>
+                    </div>
+
+                    <div class="transfer-card">
+                        <i class="fas fa-cloud-download-alt"></i>
+                        <div>
+                            <h4>Received</h4>
+                            <p>Downloads from PC</p>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </section>
 
-        <!-- FILE SECTION -->
-        <section class="file-section">
-            <h3><i class="fas fa-share-nodes"></i> File Management</h3>
-
-            <div class="file-actions">
-                <div class="transfer-card">
-                    <i class="fas fa-cloud-upload-alt"></i>
-                    <div>
-                        <h4>Send Files</h4>
-                        <p>Transfer to PC</p>
-                    </div>
+            <!-- STORAGE -->
+            <section class="storage-info">
+                <div class="storage-bar-header">
+                    <span>Storage (C:)</span>
+                    <span>120GB / 500GB</span>
                 </div>
-
-                <div class="transfer-card">
-                    <i class="fas fa-cloud-download-alt"></i>
-                    <div>
-                        <h4>Received</h4>
-                        <p>Downloads from PC</p>
-                    </div>
+                <div class="progress-bg">
+                    <div class="progress-fill" style="width: 24%;"></div>
                 </div>
-            </div>
-        </section>
-
-        <!-- STORAGE -->
-        <section class="storage-info">
-            <div class="storage-bar-header">
-                <span>Storage (C:)</span>
-                <span>120GB / 500GB</span>
-            </div>
-            <div class="progress-bg">
-                <div class="progress-fill" style="width: 24%;"></div>
-            </div>
+            </section>
         </section>
 
         <!-- ✅ FIXED MODAL (IMPORTANT PART) -->
@@ -160,7 +167,7 @@
 
             </div>
         </div>
-        
+
         <!-- Feedback Modal System -->
         <div id="feedbackModal" class="feedback-overlay">
 
@@ -176,7 +183,8 @@
                 <p id="feedbackModalMessage">Connecting to JoraPC server.</p>
 
                 <!-- Error-only button -->
-                <button id="feedbackModalCloseBtn" class="close-modal-btn" onclick="closeFeedback()" style="display:none;">
+                <button id="feedbackModalCloseBtn" class="close-modal-btn" onclick="closeFeedback()"
+                    style="display:none;">
                     Dismiss
                 </button>
 
@@ -184,6 +192,8 @@
 
         </div>
     </div>
+
+    <div id="system-info-container"></div>
 
     <script type="module" src="/javascript/app.js"></script>
 

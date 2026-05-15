@@ -1,0 +1,286 @@
+/* ==========================================================================
+   Overlay Page Container & Transition Structure
+   ========================================================================== */
+.overlay-page {
+    position: fixed;
+    top: 0;
+    left: 100%;
+    /* Initially hidden to the far right */
+    width: 100%;
+    height: 100%;
+    background: var(--bg-color, #0b0f19);
+    z-index: 99999;
+    padding: 10px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--text-main, #f8fafc);
+    transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.overlay-page.active {
+    left: 0;
+    /* Slides smoothly into frame */
+}
+
+/* ==========================================================================
+   Real High-Fidelity Loading Spinner
+   ========================================================================== */
+.sys-loading-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.spinner-container {
+    position: relative;
+    width: 60px;
+    height: 60px;
+}
+
+.spinner-core {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 4px solid rgba(56, 189, 248, 0.1);
+    border-radius: 50%;
+    box-sizing: border-box;
+}
+
+.spinner-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 4px solid transparent;
+    border-top-color: var(--accent-blue, #38bdf8);
+    border-radius: 50%;
+    box-sizing: border-box;
+    animation: speedSpin 0.75s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+}
+
+.sys-loading-text {
+    margin-top: 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-dim, #94a3b8);
+    letter-spacing: 0.5px;
+}
+
+@keyframes speedSpin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ==========================================================================
+   Improved Header Styling (Back/Title/Close Layout)
+   ========================================================================== */
+.overlay-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 35px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.overlay-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+.nav-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    color: var(--text-main, #f8fafc);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    color: var(--accent-blue);
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.back-btn:hover {
+    background: rgba(56, 189, 248, 0.12);
+    border-color: rgba(56, 189, 248, 0.3);
+    color: var(--accent-blue, #38bdf8);
+}
+
+.close-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.close-btn:hover {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+}
+
+/* ==========================================================================
+   Dashboard Architecture Grid & Cards
+   ========================================================================== */
+.sys-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 10px;
+}
+
+.stat-detail-card {
+    background: var(--card-bg, #111827);
+    border-radius: 20px;
+    padding: 15px;
+    display: flex;
+    gap: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+.stat-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+/* Contextual Card Colors mapping */
+.os-brand {
+    background: rgba(56, 189, 248, 0.08);
+    color: #38bdf8;
+}
+
+.cpu {
+    background: rgba(168, 85, 247, 0.08);
+    color: #a855f7;
+}
+
+.ram {
+    background: rgba(236, 72, 153, 0.08);
+    color: #ec4899;
+}
+
+.battery {
+    background: rgba(34, 197, 94, 0.08);
+    color: #22c55e;
+}
+
+.stat-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-info label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    color: var(--text-dim, #94a3b8);
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin: 4px 0;
+}
+
+.stat-row .value {
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+}
+
+.stat-row .value small {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-dim, #94a3b8);
+}
+
+.stat-row .percent,
+.stat-row .temp {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-main, #f8fafc);
+}
+
+.bottom-metadata {
+    font-size: 0.8rem;
+    color: var(--text-dim, #94a3b8);
+    margin-top: auto;
+    padding-top: 6px;
+}
+
+/* Progress Indicators */
+.mini-progress {
+    background: rgba(0, 0, 0, 0.4);
+    height: 6px;
+    border-radius: 10px;
+    margin-top: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+.mini-progress .bar {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==========================================================================
+   Network Statistics Footer Area
+   ========================================================================== */
+.network-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+    padding: 16px 24px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 16px;
+}
+
+.net-item {
+    font-size: 0.85rem;
+    color: var(--text-dim, #94a3b8);
+}
+
+.net-item strong {
+    color: var(--text-main, #f8fafc);
+}
+
+.net-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-dim);
+}
+
+.net-item i {
+    color: var(--accent-blue);
+}

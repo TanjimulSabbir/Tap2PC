@@ -31,46 +31,124 @@ ws.onerror = (err) => {
 window.ws = ws; // Expose for app.js to use
 
 
-function updateUI(data) {
-    if (!data) return;
-
-    // 🖥️ Update PC Name
-    const hostname = data.os?.hostname || "Unknown Device";
+export function updateUI(data) {
+    const statusDot = document.querySelector(".device-row .dot"); // Matches updated layout selector
     const pcNameElement = document.getElementById("pcName");
-    if (pcNameElement) pcNameElement.innerText = hostname;
-
-    // 🔋 Update Battery
-    const bat = data.battery?.percent;
+    const osIconContainer = document.getElementById("osIconContainer");
     const batteryElement = document.getElementById("battery");
-    if (batteryElement) {
-        batteryElement.innerText = (bat !== undefined && bat !== -1) ? `${bat}%` : "AC";
+    const batteryIcon = document.querySelector(".battery-mini i");
+    const connectionBadge = document.getElementById("connectionBadge");
+
+    // =========================
+    // OFFLINE STATE
+    // =========================
+    if (!data || data.status === "offline") {
+        if (statusDot) {
+            statusDot.className = "dot pulse offline";
+        }
+
+        if (connectionBadge) {
+            connectionBadge.className = "status-badge offline";
+            connectionBadge.innerText = "Offline";
+        }
+        return;
     }
 
-    // 💾 Update Storage
-    if (data.fsSize && data.fsSize.length > 0) {
-        const drive = data.fsSize[0];
-        const usedGB = (drive.used / (1024 ** 3)).toFixed(1);
-        const totalGB = (drive.size / (1024 ** 3)).toFixed(0);
+    // =========================
+    // ONLINE STATE
+    // =========================
+    if (statusDot) {
+        statusDot.className = "dot pulse online";
+    }
 
-        document.getElementById("storageText").innerText = `${usedGB}/${totalGB} GB`;
-        document.getElementById("storageBar").style.width = `${drive.use}%`;
+    if (connectionBadge) {
+        connectionBadge.className = "status-badge online";
+        connectionBadge.innerText = "Online";
+    }
+
+    // =========================
+    // HOSTNAME & DISTRO (Fixed Data Reference)
+    // =========================
+    if (pcNameElement) {
+        const hostname = data.os?.hostname || "Unknown Device";
+        const distroSuffix = data.os?.distro ? ` (${data.os.distro})` : "";
+        
+        // Fixed from data.distro -> data.os.distro to prevent 'undefined' text
+        pcNameElement.innerText = hostname + distroSuffix;
+    }
+
+    // =========================
+    // OS ICON (Premium Neon Color Mapping)
+    // =========================
+    if (osIconContainer && data.os?.platform) {
+        const platform = data.os.platform.toLowerCase();
+        const distro = data.os.distro?.toLowerCase() || "";
+
+        if (platform.includes("windows")) {
+            osIconContainer.innerHTML =
+                '<i class="fab fa-windows" style="color: #38bdf8; filter: drop-shadow(0 0 8px rgba(56,189,248,0.4));"></i>';
+        } else if (platform.includes("linux") && distro.includes("ubuntu")) {
+            osIconContainer.innerHTML =
+                '<i class="fab fa-ubuntu" style="color: #ff7a59; filter: drop-shadow(0 0 8px rgba(255,122,89,0.4));"></i>';
+        } else if (platform.includes("linux")) {
+            osIconContainer.innerHTML =
+                '<i class="fab fa-linux" style="color: #ffffff; filter: drop-shadow(0 0 6px rgba(255,255,255,0.3));"></i>';
+        } else if (platform.includes("darwin") || platform.includes("mac")) {
+            osIconContainer.innerHTML =
+                '<i class="fab fa-apple" style="color: #ffffff; filter: drop-shadow(0 0 6px rgba(255,255,255,0.3));"></i>';
+        } else {
+            osIconContainer.innerHTML =
+                '<i class="fas fa-desktop" style="color: #64748b;"></i>';
+        }
+    }
+
+    // =========================
+    // BATTERY
+    // =========================
+    if (batteryElement && data.battery) {
+        const percent = Math.round(data.battery.percent || 0);
+
+        if (data.battery.isCharging) {
+            batteryElement.innerText = `${percent}% Charging`;
+            if (batteryIcon) {
+                batteryIcon.className = "fas fa-bolt";
+            }
+        } else {
+            batteryElement.innerText = `${percent}%`;
+            if (batteryIcon) {
+                if (percent > 75) {
+                    batteryIcon.className = "fas fa-battery-full";
+                } else if (percent > 40) {
+                    batteryIcon.className = "fas fa-battery-half";
+                } else {
+                    batteryIcon.className = "fas fa-battery-quarter";
+                }
+            }
+        }
+    }
+
+    // =========================
+    // OPTIONAL DEBUG LOGS
+    // =========================
+    if (data.cpuUsage?.currentLoad) {
+        console.log("CPU Usage:", data.cpuUsage.currentLoad.toFixed(1) + "%");
+    }
+    if (data.memory?.usagePercent) {
+        console.log("RAM Usage:", data.memory.usagePercent.toFixed(1) + "%");
     }
 }
 
-// ⏱️ Live Clock Logic
-function startClock() {
-    const timeElement = document.getElementById("currentTime");
-    function updateClock() {
-        const now = new Date();
-        timeElement.innerText = now.toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false
-        });
-    }
-    updateClock();
-    setInterval(updateClock, 1000); // Update every second for accuracy
-}
+// =========================
+// LIVE CLOCK (High Efficiency 24h Presentation)
+// =========================
+setInterval(() => {
+    const currentTimeElement = document.getElementById("currentTime");
+    if (!currentTimeElement) return;
 
-// Run clock on load
-startClock();
+    const now = new Date();
+    currentTimeElement.innerText = now.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true // Force crisp 24h format for the system console feel
+    });
+}, 1000);
