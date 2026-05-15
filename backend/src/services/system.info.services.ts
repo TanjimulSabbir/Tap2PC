@@ -22,6 +22,10 @@ export const getSystemInfo = async () => {
     const time = si.time();
 
     const primaryNetwork = networkInterfaces.find(n => n.default) || networkInterfaces[0];
+    console.log("🔍 Fetched system info:", {
+        battery,
+   
+    });
 
     return {
         os: {
@@ -58,7 +62,7 @@ export const getSystemInfo = async () => {
         battery: battery.hasBattery
             ? {
                 percent: battery.percent,
-                isCharging: battery.isCharging,
+                isCharging: battery.acConnected,
                 timeRemaining: battery.timeRemaining
             }
             : null,

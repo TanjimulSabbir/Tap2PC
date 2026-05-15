@@ -33,7 +33,7 @@ router.get("/info", async (_req, res) => {
             disk,
             mem
         });
-
+console.log("📦 Sent system info to client", battery);
     } catch (err) {
         res.status(500).json({
             success: false,

@@ -32,25 +32,35 @@ window.ws = ws; // Expose for app.js to use
 
 
 export function updateUI(data) {
-    const statusDot = document.querySelector(".device-row .dot"); // Matches updated layout selector
+
+    // FIXED SELECTORS
+    const statusDot = document.querySelector(".pulse-dot");
     const pcNameElement = document.getElementById("pcName");
-    const osIconContainer = document.getElementById("osIconContainer");
-    const batteryElement = document.getElementById("battery");
-    const batteryIcon = document.querySelector(".battery-mini i");
-    const connectionBadge = document.getElementById("connectionBadge");
+
+    // Removed because it doesn't exist in HTML
+    const osIconContainer = null;
+
+    const batteryElement = document.getElementById("battery-info");
+    const batteryIcon = document.querySelector("#battery-info i");
+
+    // Fixed selector
+    const connectionBadge = document.querySelector(".neon-pill");
+
+    console.log(data, "--- Updating UI with above data ---");
 
     // =========================
     // OFFLINE STATE
     // =========================
     if (!data || data.status === "offline") {
+
         if (statusDot) {
-            statusDot.className = "dot pulse offline";
+            statusDot.className = "pulse-dot offline";
         }
 
         if (connectionBadge) {
-            connectionBadge.className = "status-badge offline";
             connectionBadge.innerText = "Offline";
         }
+
         return;
     }
 
@@ -58,97 +68,93 @@ export function updateUI(data) {
     // ONLINE STATE
     // =========================
     if (statusDot) {
-        statusDot.className = "dot pulse online";
+        statusDot.className = "pulse-dot online";
     }
 
     if (connectionBadge) {
-        connectionBadge.className = "status-badge online";
-        connectionBadge.innerText = "Online";
+        connectionBadge.innerHTML =
+            '<span class="pulse-dot online"></span> Online';
     }
 
     // =========================
-    // HOSTNAME & DISTRO (Fixed Data Reference)
+    // HOSTNAME & DISTRO
     // =========================
     if (pcNameElement) {
-        const hostname = data.os?.hostname || "Unknown Device";
-        const distroSuffix = data.os?.distro ? ` (${data.os.distro})` : "";
-        
-        // Fixed from data.distro -> data.os.distro to prevent 'undefined' text
-        pcNameElement.innerText = hostname + distroSuffix;
-    }
 
-    // =========================
-    // OS ICON (Premium Neon Color Mapping)
-    // =========================
-    if (osIconContainer && data.os?.platform) {
-        const platform = data.os.platform.toLowerCase();
-        const distro = data.os.distro?.toLowerCase() || "";
+        const hostname =
+            data.os?.hostname || "Unknown Device";
 
-        if (platform.includes("windows")) {
-            osIconContainer.innerHTML =
-                '<i class="fab fa-windows" style="color: #38bdf8; filter: drop-shadow(0 0 8px rgba(56,189,248,0.4));"></i>';
-        } else if (platform.includes("linux") && distro.includes("ubuntu")) {
-            osIconContainer.innerHTML =
-                '<i class="fab fa-ubuntu" style="color: #ff7a59; filter: drop-shadow(0 0 8px rgba(255,122,89,0.4));"></i>';
-        } else if (platform.includes("linux")) {
-            osIconContainer.innerHTML =
-                '<i class="fab fa-linux" style="color: #ffffff; filter: drop-shadow(0 0 6px rgba(255,255,255,0.3));"></i>';
-        } else if (platform.includes("darwin") || platform.includes("mac")) {
-            osIconContainer.innerHTML =
-                '<i class="fab fa-apple" style="color: #ffffff; filter: drop-shadow(0 0 6px rgba(255,255,255,0.3));"></i>';
-        } else {
-            osIconContainer.innerHTML =
-                '<i class="fas fa-desktop" style="color: #64748b;"></i>';
-        }
+        const distroSuffix =
+            data.os?.distro
+                ? ` (${data.os.distro})`
+                : "";
+
+        pcNameElement.innerText =
+            hostname + distroSuffix;
     }
 
     // =========================
     // BATTERY
     // =========================
     if (batteryElement && data.battery) {
+
         const percent = Math.round(data.battery.percent || 0);
 
+        const icon = batteryElement.querySelector("i");
+
+        let iconClass = "";
+        let color = "#ffffff";
+
         if (data.battery.isCharging) {
-            batteryElement.innerText = `${percent}% Charging`;
-            if (batteryIcon) {
-                batteryIcon.className = "fas fa-bolt";
-            }
+
+            iconClass = "fas fa-bolt";
+            color = "yellow";
+
+            batteryElement.innerHTML =
+                `<i class="${iconClass}"></i> <p style="color: ${color}; margin-left: 4px;">  ${percent}%  (Charging)</p>`;
+
         } else {
-            batteryElement.innerText = `${percent}%`;
-            if (batteryIcon) {
-                if (percent > 75) {
-                    batteryIcon.className = "fas fa-battery-full";
-                } else if (percent > 40) {
-                    batteryIcon.className = "fas fa-battery-half";
-                } else {
-                    batteryIcon.className = "fas fa-battery-quarter";
-                }
+
+            if (percent > 75) {
+                iconClass = "fas fa-battery-full";
+                color = "#22c55e";
+            } else if (percent > 40) {
+                iconClass = "fas fa-battery-half";
+                color = "#fbbf24";
+            } else {
+                iconClass = "fas fa-battery-quarter";
+                color = "#ef4444";
             }
+
+            batteryElement.innerHTML =
+                `<i class="${iconClass}"></i> <p style="color: ${color}; margin-left: 4px;"> ${percent}%</p>`;
+
+        }
+
+        // ONLY APPLY COLOR TO ICON, NOT WHOLE ELEMENT
+        const newIcon = batteryElement.querySelector("i");
+        if (newIcon) {
+            newIcon.style.color = color;
         }
     }
-
-    // =========================
-    // OPTIONAL DEBUG LOGS
-    // =========================
-    if (data.cpuUsage?.currentLoad) {
-        console.log("CPU Usage:", data.cpuUsage.currentLoad.toFixed(1) + "%");
-    }
-    if (data.memory?.usagePercent) {
-        console.log("RAM Usage:", data.memory.usagePercent.toFixed(1) + "%");
-    }
 }
-
 // =========================
-// LIVE CLOCK (High Efficiency 24h Presentation)
+// LIVE CLOCK
 // =========================
 setInterval(() => {
-    const currentTimeElement = document.getElementById("currentTime");
+
+    const currentTimeElement =
+        document.getElementById("currentTime");
+
     if (!currentTimeElement) return;
 
     const now = new Date();
-    currentTimeElement.innerText = now.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true // Force crisp 24h format for the system console feel
-    });
+
+    currentTimeElement.innerText =
+        now.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true
+        });
+
 }, 1000);

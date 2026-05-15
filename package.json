@@ -1,7 +1,7 @@
 {
-  "name": "Tap2PC",
+  "name": "Jora PC",
   "version": "1.0.0",
-  "description": "Tap2PC is a lightweight, local-first remote control and file sharing system that lets you manage your PC from a mobile device via a web browser. Running entirely on LAN with no cloud, login, or external dependencies, it provides fast and secure control for actions like shutdown, restart, sleep, lock, and data sharing — similar to TeamViewer but simpler and browser-based.",
+  "description": "Jora PC is a lightweight, local-first remote control and file sharing system that lets you manage your PC from a mobile device via a web browser. Running entirely on LAN with no cloud, login, or external dependencies, it provides fast and secure control for actions like shutdown, restart, sleep, lock, and data sharing — similar to TeamViewer but simpler and browser-based.",
   "keywords": [
     "javascript",
     "nodejs"

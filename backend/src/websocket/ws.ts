@@ -23,7 +23,7 @@ export const initWebSocket = (server: any) => {
     console.log("📦 Sending welcome message with system info...");
     ws.send(JSON.stringify({
       type: "SYSTEM_INFO",
-      message: "Welcome to Tap2PC WebSocket!",
+      message: "Welcome to Jora PC WebSocket!",
       data: systemInfo
     }));
 
